@@ -42,9 +42,8 @@ void printMenu(){
 }
 
 musica_no* criaLista(){
-    musica_no* cabeca = (musica_no*) malloc(sizeof(musica_no));
-    cabeca->prox = NULL;
-    cabeca->ant = NULL;
+    musica_no *cabeca = (musica_no*) malloc(sizeof(musica_no));
+    cabeca->prox = cabeca;
     return cabeca;
 }
 
@@ -66,14 +65,11 @@ musica definirMusica(){
     printf("ID da musica: ");
     scanf("%d", &p.id);
     printf("Titulo da musica: ");
-    fflush(stdin);
-    fgets(p.titulo, MAX_CHAR, stdin);
+    cin >> p.titulo;
     printf("Artista da musica: ");
-    fflush(stdin);
-    fgets(p.artista, MAX_CHAR, stdin);
+    cin >> p.artista;
     printf("Album da musica: ");
-    fflush(stdin);
-    fgets(p.album, MAX_CHAR, stdin);
+    cin >> p.album;
     printf("Duracao da musica: ");
     scanf("%d", &p.duracao);
 
@@ -96,22 +92,21 @@ void imprimirListaDeMusicas(musica_no* ini){
     p = ini->prox;
     while (p)
     {
-        printf("%s", p->musica->titulo);
-        printf("%s", p->musica->artista);
-        printf("%s", p->musica->album);
+        printf("%s\n", p->musica->titulo);
+        printf("%s\n", p->musica->artista);
+        printf("%s\n", p->musica->album);
         int h, m, s;
         h = (p->musica->duracao/3600); 
 	    m = (p->musica->duracao -(3600*h))/60;
 	    s = (p->musica->duracao -(3600*h)-(m*60));
         printf("%d:%d:%d\n",h,m,s);
-        printf("------------------------");
+        printf("------------------------\n");
 
         p = p->prox;
     }
 }
 
 int main(){
-    cout << "ola";
     int opcao = -1;
     musica_no* listaDeMusicas = criaLista();
     do
