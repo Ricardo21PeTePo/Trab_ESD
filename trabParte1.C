@@ -13,7 +13,7 @@ typedef struct musica_no {
     musica *musica;
     struct musica_no *ant;
     struct musica_no *prox;
-} *musica_no;
+} musica_no;
 
 typedef struct playlist_no {
     musica *musica;
@@ -29,21 +29,23 @@ typedef struct lplaylists_no {
 
 void printMenu(){
     printf("0 - Terminar programa;\n");
-    printf("1 - Cadastrar música;\n");
+    printf("1 - Cadastrar musica;\n");
     printf("2 - Cadastrar playlist;\n");
+
+    printf("Insira uma opcao: ");
 }
 
-musica_no iniciaLista(){
-    musica_no cabeca;
+musica_no* iniciaLista(){
+    musica_no* cabeca;
     cabeca->prox = NULL;
     cabeca->ant = NULL;
     cabeca->musica = NULL;
     return cabeca;
 }
 
-int qtddMusicasCadastradas(musica_no ini){
+int qtddMusicasCadastradas(musica_no* ini){
     int x = 0;
-    musica_no p = ini;
+    musica_no* p = ini;
     while (p)
     {
         x++;
@@ -53,7 +55,7 @@ int qtddMusicasCadastradas(musica_no ini){
     
 }
 
-void cadastrarMusica(musica_no ini){
+void cadastrarMusica(musica_no* ini){
     musica novaMusica;
     novaMusica.id = qtddMusicasCadastradas(ini);
     printf("Insira o titulo da musica: ");
@@ -65,20 +67,42 @@ void cadastrarMusica(musica_no ini){
     printf("Insira a duracao da musica [em segundos]: ");
     scanf("%d", &novaMusica.duracao);
 
-    musica_no p = ini->prox;
+    musica_no* p = ini->prox;
     p->ant = ini;
     p->musica = &novaMusica;
     ini->prox = p;
     
 }
 
+void imprimirListaDeMusicas(musica_no* ini){
+    musica_no* p = ini->prox;
+    while (p)
+    {
+        printf("%s", p->musica->titulo);
+        p = p->prox;
+    }
+    
+}
+
 int main(){
     int opcao = -1;
-    musica_no listaDeMusicas = iniciaLista();
+    musica_no* listaDeMusicas = iniciaLista();
     do
     {
         printMenu();
         scanf("%d", &opcao);
+        switch (opcao)
+        {
+        case 1:
+            cadastrarMusica(listaDeMusicas);
+            break;
+        case 2:
+            imprimirListaDeMusicas(listaDeMusicas);
+            break;
+        default:
+            break;
+        }
+        
     } while (opcao != 0);
     
 }
