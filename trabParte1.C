@@ -33,7 +33,7 @@ typedef struct lplaylists_no {
 void printMenu(){
     printf("0 - Terminar programa;\n");
     printf("1 - Cadastrar musica;\n");
-    printf("2 - Cadastrar playlist;\n");
+    printf("2 - Lista de musicas;\n");
 
     printf("Insira uma opcao: ");
 }
@@ -94,6 +94,15 @@ void imprimirListaDeMusicas(musica_no* ini){
     while (p)
     {
         printf("%s", p->musica->titulo);
+        printf("%s", p->musica->artista);
+        printf("%s", p->musica->album);
+        int h, m, s;
+        h = (p->musica->duracao/3600); 
+	    m = (p->musica->duracao -(3600*h))/60;
+	    s = (p->musica->duracao -(3600*h)-(m*60));
+        printf("%d:%d:%d\n",h,m,s);
+        printf("------------------------");
+
         p = p->prox;
     }
 }
