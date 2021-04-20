@@ -13,7 +13,7 @@ typedef struct musica_no {
     musica *musica;
     struct musica_no *ant;
     struct musica_no *prox;
-} musica_no;
+} *musica_no;
 
 typedef struct playlist_no {
     musica *musica;
@@ -33,12 +33,48 @@ void printMenu(){
     printf("2 - Cadastrar playlist;\n");
 }
 
-void cadastrarMusica(){
+musica_no iniciaLista(){
+    musica_no cabeca;
+    cabeca->prox = NULL;
+    cabeca->ant = NULL;
+    cabeca->musica = NULL;
+    return cabeca;
+}
+
+int qtddMusicasCadastradas(musica_no ini){
+    int x = 0;
+    musica_no p = ini;
+    while (p)
+    {
+        x++;
+        p = p->prox;
+    }
+    return x;
+    
+}
+
+void cadastrarMusica(musica_no ini){
+    musica novaMusica;
+    novaMusica.id = qtddMusicasCadastradas(ini);
+    printf("Insira o titulo da musica: ");
+    scanf("%s", &novaMusica.titulo);
+    printf("Insira o artista da musica: ");
+    scanf("%s", &novaMusica.artista);
+    printf("Insira o nome do album da musica: ");
+    scanf("%s", &novaMusica.album);
+    printf("Insira a duracao da musica [em segundos]: ");
+    scanf("%d", &novaMusica.duracao);
+
+    musica_no p = ini->prox;
+    p->ant = ini;
+    p->musica = &novaMusica;
+    ini->prox = p;
     
 }
 
 int main(){
     int opcao = -1;
+    musica_no listaDeMusicas = iniciaLista();
     do
     {
         printMenu();
