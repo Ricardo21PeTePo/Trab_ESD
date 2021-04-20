@@ -1,5 +1,7 @@
 # Trab_ESD
 https://github.com/Ricardo21PeTePo/Trab_ESD.git
+
+Escrever isso no git bash
 $ git config --global user.email "seu@email"
 $ git config --global user.name "seu usuario"
 
