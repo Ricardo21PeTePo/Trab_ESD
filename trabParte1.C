@@ -43,7 +43,8 @@ void printMenu(){
 
 musica_no* criaLista(){
     musica_no *cabeca = (musica_no*) malloc(sizeof(musica_no));
-    cabeca->prox = cabeca;
+    cabeca->prox = NULL;
+    cabeca->ant = NULL;
     return cabeca;
 }
 
@@ -59,31 +60,14 @@ int qtddMusicasCadastradas(musica_no* ini){
     
 }
 
-musica definirMusica(){
-    musica p;
-    
-    printf("ID da musica: ");
-    scanf("%d", &p.id);
-    printf("Titulo da musica: ");
-    cin >> p.titulo;
-    printf("Artista da musica: ");
-    cin >> p.artista;
-    printf("Album da musica: ");
-    cin >> p.album;
-    printf("Duracao da musica: ");
-    scanf("%d", &p.duracao);
 
-    return p;
-}
 
-void cadastrarMusica(musica_no *ini, musica s){
+void cadastrarMusica(musica_no *ini, musica *s){
     musica_no *novo;
     novo = (musica_no*) malloc(sizeof(musica_no));
-
-    novo->musica = &s;
+    novo->musica = s;
     novo->prox = ini->prox;
     novo->ant = ini;
-    if (ini->prox) ini->prox->ant = novo;
     ini->prox = novo;
 }
 
@@ -92,9 +76,9 @@ void imprimirListaDeMusicas(musica_no* ini){
     p = ini->prox;
     while (p)
     {
-        printf("%s\n", p->musica->titulo);
-        printf("%s\n", p->musica->artista);
-        printf("%s\n", p->musica->album);
+        cout << p->musica->titulo << endl;
+        cout << p->musica->artista << endl;
+        cout << p->musica->album << endl;
         int h, m, s;
         h = (p->musica->duracao/3600); 
 	    m = (p->musica->duracao -(3600*h))/60;
@@ -112,12 +96,27 @@ int main(){
     do
     {
         printMenu();
-        scanf("%d", &opcao);
+        cin >> opcao;
         switch (opcao)
         {
-        case 1:
-            cadastrarMusica(listaDeMusicas, definirMusica());
+        case 1:{
+            musica *p = (musica*) malloc(sizeof(musica));
+    
+            printf("ID da musica: ");
+            cin >> p->id;
+            printf("Titulo da musica: ");
+            cin >> p->titulo;
+            printf("Artista da musica: ");
+            cin >> p->artista;
+            printf("Album da musica: ");
+            cin >> p->album;
+            printf("Duracao da musica: ");
+            cin >> p->duracao;
+
+            cadastrarMusica(listaDeMusicas, p);
             break;
+        }
+            
         case 2:
             imprimirListaDeMusicas(listaDeMusicas);
             break;

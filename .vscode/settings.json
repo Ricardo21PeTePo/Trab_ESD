@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "trabParte1.C": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "ostream": "cpp"
     }
 }
