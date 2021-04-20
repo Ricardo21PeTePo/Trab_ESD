@@ -27,6 +27,22 @@ typedef struct lplaylists_no {
     struct lplaylists_no *prox;
 } lplaylists_no;
 
-int main(){
+void printMenu(){
+    printf("0 - Terminar programa;\n");
+    printf("1 - Cadastrar música;\n");
+    printf("2 - Cadastrar playlist;\n");
+}
 
+void cadastrarMusica(){
+    
+}
+
+int main(){
+    int opcao = -1;
+    do
+    {
+        printMenu();
+        scanf("%d", &opcao);
+    } while (opcao != 0);
+    
 }
