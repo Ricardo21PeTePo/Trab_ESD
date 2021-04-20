@@ -1,11 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+
+#define MAX_CHAR 200
 
 typedef struct musica {
     int id;
-    char titulo[200];
-    char artista[200];
-    char album[200];
+    char titulo[MAX_CHAR];
+    char artista[MAX_CHAR];
+    char album[MAX_CHAR];
     int duracao; //em segundos
 } musica;
 
@@ -22,7 +25,7 @@ typedef struct playlist_no {
 
 typedef struct lplaylists_no {
     int id;
-    char nome[200];
+    char nome[MAX_CHAR];
     playlist_no *musicas;
     struct lplaylists_no *prox;
 } lplaylists_no;
@@ -35,11 +38,10 @@ void printMenu(){
     printf("Insira uma opcao: ");
 }
 
-musica_no* iniciaLista(){
-    musica_no* cabeca;
+musica_no* criaLista(){
+    musica_no* cabeca = (musica_no*) malloc(sizeof(musica_no));
     cabeca->prox = NULL;
     cabeca->ant = NULL;
-    cabeca->musica = NULL;
     return cabeca;
 }
 
@@ -55,38 +57,50 @@ int qtddMusicasCadastradas(musica_no* ini){
     
 }
 
-void cadastrarMusica(musica_no* ini){
-    musica novaMusica;
-    novaMusica.id = qtddMusicasCadastradas(ini);
-    printf("Insira o titulo da musica: ");
-    scanf("%s", &novaMusica.titulo);
-    printf("Insira o artista da musica: ");
-    scanf("%s", &novaMusica.artista);
-    printf("Insira o nome do album da musica: ");
-    scanf("%s", &novaMusica.album);
-    printf("Insira a duracao da musica [em segundos]: ");
-    scanf("%d", &novaMusica.duracao);
-
-    musica_no* p = ini->prox;
-    p->ant = ini;
-    p->musica = &novaMusica;
-    ini->prox = p;
+musica definirMusica(){
+    musica p;
     
+    printf("ID da musica: ");
+    scanf("%d", &p.id);
+    printf("Titulo da musica: ");
+    fflush(stdin);
+    fgets(p.titulo, MAX_CHAR, stdin);
+    printf("Artista da musica: ");
+    fflush(stdin);
+    fgets(p.artista, MAX_CHAR, stdin);
+    printf("Album da musica: ");
+    fflush(stdin);
+    fgets(p.album, MAX_CHAR, stdin);
+    printf("Duracao da musica: ");
+    scanf("%d", &p.duracao);
+
+    return p;
+}
+
+void cadastrarMusica(musica_no *ini, musica s){
+    musica_no *novo;
+    novo = (musica_no*) malloc(sizeof(musica_no));
+
+    novo->musica = &s;
+    novo->prox = ini->prox;
+    novo->ant = ini;
+    if (ini->prox) ini->prox->ant = novo;
+    ini->prox = novo;
 }
 
 void imprimirListaDeMusicas(musica_no* ini){
-    musica_no* p = ini->prox;
+    musica_no* p;
+    p = ini->prox;
     while (p)
     {
         printf("%s", p->musica->titulo);
         p = p->prox;
     }
-    
 }
 
 int main(){
     int opcao = -1;
-    musica_no* listaDeMusicas = iniciaLista();
+    musica_no* listaDeMusicas = criaLista();
     do
     {
         printMenu();
@@ -94,7 +108,7 @@ int main(){
         switch (opcao)
         {
         case 1:
-            cadastrarMusica(listaDeMusicas);
+            cadastrarMusica(listaDeMusicas, definirMusica());
             break;
         case 2:
             imprimirListaDeMusicas(listaDeMusicas);
@@ -104,5 +118,7 @@ int main(){
         }
         
     } while (opcao != 0);
-    
+
+
+    return 0;
 }
