@@ -1,6 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <iostream>
+
+using namespace std;
 
 #define MAX_CHAR 200
 
@@ -108,6 +111,7 @@ void imprimirListaDeMusicas(musica_no* ini){
 }
 
 int main(){
+    cout << "ola";
     int opcao = -1;
     musica_no* listaDeMusicas = criaLista();
     do
