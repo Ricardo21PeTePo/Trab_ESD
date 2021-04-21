@@ -37,14 +37,21 @@ void printMenu(){
     printf("0 - Terminar programa;\n");
     printf("1 - Cadastrar musica;\n");
     printf("2 - Lista de musicas;\n");
+    printf("3 - Criar playlist;\n");
 
     printf("Insira uma opcao: ");
 }
 
-musica_no* criaLista(){
+musica_no* criaListaEncadeada(){
     musica_no *cabeca = (musica_no*) malloc(sizeof(musica_no));
     cabeca->prox = NULL;
     cabeca->ant = NULL;
+    return cabeca;
+}
+
+playlist_no* criaListaCircular(){
+    playlist_no *cabeca = (playlist_no*) malloc(sizeof(playlist_no));
+    cabeca->prox = cabeca;
     return cabeca;
 }
 
@@ -90,9 +97,20 @@ void imprimirListaDeMusicas(musica_no* ini){
     }
 }
 
+void inserirEmPlaylist(musica_no* ini, playlist_no* p, musica* s){
+    musica_no* aux;
+    aux = ini->prox;
+    while (aux)
+    {
+        /* code */
+    }
+    
+}
+
+
 int main(){
     int opcao = -1;
-    musica_no* listaDeMusicas = criaLista();
+    musica_no* listaDeMusicas = criaListaEncadeada();
     do
     {
         printMenu();
@@ -120,6 +138,9 @@ int main(){
         case 2:
             imprimirListaDeMusicas(listaDeMusicas);
             break;
+        case 3: {
+            cout << "criar playlist";
+        }
         default:
             break;
         }
