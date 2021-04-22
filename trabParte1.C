@@ -102,17 +102,11 @@ void imprimirListaDeMusicas(musica_no* ini){
     }
 }
 
-
-
-void inserirEmPlaylist(musica_no* ini, playlist_no* p, musica* s){
-    musica_no* aux;
-    aux = ini->prox;
-    while (aux)
-    {
-        /* code */
-    }
+void inserePlaylist(int musicasid[], musica_no* ini, playlist_no* p){
     
 }
+
+
 
 
 int main(){
@@ -147,7 +141,7 @@ int main(){
             imprimirListaDeMusicas(listaDeMusicas);
             break;
         case 3: {
-            cout << "criar playlist";
+            playlist_no* novaPlaylist = (playlist_no*) malloc(sizeof(playlist_no));
         }
         default:
             break;
