@@ -41,8 +41,13 @@ void printMenu(){
 
     printf("Insira uma opcao: ");
 }
+lplaylists_no* criaListaEncadeada(){
+    lplaylists_no *cabeca = (lplaylists_no*) malloc(sizeof(lplaylists_no));
+    cabeca->prox = NULL;
+    return cabeca;
+}
 
-musica_no* criaListaEncadeada(){
+musica_no* criaListaDupla(){
     musica_no *cabeca = (musica_no*) malloc(sizeof(musica_no));
     cabeca->prox = NULL;
     cabeca->ant = NULL;
@@ -97,6 +102,8 @@ void imprimirListaDeMusicas(musica_no* ini){
     }
 }
 
+
+
 void inserirEmPlaylist(musica_no* ini, playlist_no* p, musica* s){
     musica_no* aux;
     aux = ini->prox;
@@ -110,7 +117,8 @@ void inserirEmPlaylist(musica_no* ini, playlist_no* p, musica* s){
 
 int main(){
     int opcao = -1;
-    musica_no* listaDeMusicas = criaListaEncadeada();
+    musica_no* listaDeMusicas = criaListaDupla();
+    lplaylists_no* listaDePlaylists = criaListaEncadeada();
     do
     {
         printMenu();
