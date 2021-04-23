@@ -141,7 +141,7 @@ int main(){
             imprimirListaDeMusicas(listaDeMusicas);
             break;
         case 3: {
-            playlist_no* novaPlaylist = (playlist_no*) malloc(sizeof(playlist_no));
+            cout << "teste";
         }
         default:
             break;
