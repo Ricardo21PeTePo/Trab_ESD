@@ -102,11 +102,11 @@ void imprimirListaDeMusicas(musica_no* ini){
     }
 }
 
-playlist_no* criaPlaylist(int musicas[], musica_no* listaDeMusicas){
+playlist_no* criaPlaylist(int qtddM, int musicas[], musica_no* listaDeMusicas){
     int i;
     musica_no* ini = listaDeMusicas->prox;
     playlist_no* novaPlaylist = criaListaCircular();
-    for (i = 0; i < sizeof(musicas); i++)
+    for (i = 0; i < qtddM; i++)
     {
         while (ini)
         {
@@ -195,7 +195,7 @@ int main(){
             cin >> nomePlaylist;
             cout << "Insira o ID da playlist: ";
             cin >> idPlaylist;
-            inserirPlaylist(listaDePlaylists, criaPlaylist(novaPlaylist, listaDeMusicas), idPlaylist, nomePlaylist);
+            inserirPlaylist(listaDePlaylists, criaPlaylist(qtddMusicasP, novaPlaylist, listaDeMusicas), idPlaylist, nomePlaylist);
             break;
         }
         case 4:
