@@ -129,22 +129,22 @@ playlist_no* criaPlaylist(int qtddM, int musicas[], musica_no* listaDeMusicas){
     return novaPlaylist;
 }
 
-void inserirPlaylist(lplaylists_no* lp, playlist_no* p, int id, char nome[MAX_CHAR]){
-    lplaylists_no* ini = lp->prox;
-    while (ini)
-    {
-        ini->musicas = p;
-        ini->id = id;
-        ini->nome[MAX_CHAR] = nome[MAX_CHAR];
-        ini = ini->prox;
-    }
+void inserirPlaylist(lplaylists_no* ini, playlist_no* p, int id, char nome[MAX_CHAR]){
+    lplaylists_no* novaPlaylist = (lplaylists_no*) malloc(sizeof(lplaylists_no));
+    novaPlaylist->musicas = p;
+    novaPlaylist->id = id;
+    novaPlaylist->nome[MAX_CHAR] = nome[MAX_CHAR];
+    
+    novaPlaylist->prox = ini->prox;
+    ini->prox = novaPlaylist;
+    
 }
 
 void imprimirPlaylists(lplaylists_no* lp){
     lplaylists_no* ini = lp->prox;
     while (ini)
     {
-        cout << ini->musicas->musica->titulo;
+        cout << ini->id;
         ini = ini->prox;
     }
     
