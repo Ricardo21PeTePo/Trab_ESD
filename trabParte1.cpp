@@ -102,12 +102,53 @@ void imprimirListaDeMusicas(musica_no* ini){
     }
 }
 
-void inserePlaylist(int musicasid[], musica_no* ini, playlist_no* p){
-    
+playlist_no* criaPlaylist(int musicas[], musica_no* listaDeMusicas){
+    int i;
+    musica_no* ini = listaDeMusicas->prox;
+    playlist_no* novaPlaylist = criaListaCircular();
+    for (i = 0; i < sizeof(musicas); i++)
+    {
+        while (ini)
+        {
+            if(ini->musica->id == musicas[i]){
+                playlist_no* p = (playlist_no*) malloc(sizeof(playlist_no));
+                p->musica = ini->musica;
+                if (novaPlaylist->prox = novaPlaylist)
+                {
+                    novaPlaylist->prox = p;
+                    p->prox = novaPlaylist;
+                } else {
+                    p->prox = novaPlaylist->prox;
+                    novaPlaylist->prox = p;
+                }
+                
+            }
+            ini = ini->prox;
+        }
+    }
+    return novaPlaylist;
 }
 
+void inserirPlaylist(lplaylists_no* lp, playlist_no* p, int id, char nome[MAX_CHAR]){
+    lplaylists_no* ini = lp->prox;
+    while (ini)
+    {
+        ini->musicas = p;
+        ini->id = id;
+        ini->nome[MAX_CHAR] = nome[MAX_CHAR];
+        ini = ini->prox;
+    }
+}
 
-
+void imprimirPlaylists(lplaylists_no* lp){
+    lplaylists_no* ini = lp->prox;
+    while (ini)
+    {
+        cout << ini->musicas->musica->titulo;
+        ini = ini->prox;
+    }
+    
+}
 
 int main(){
     int opcao = -1;
@@ -141,8 +182,25 @@ int main(){
             imprimirListaDeMusicas(listaDeMusicas);
             break;
         case 3: {
-            cout << "teste";
+            int qtddMusicasP, i, idPlaylist;
+            char nomePlaylist[MAX_CHAR];
+            cout << "Quantas musicas deseja inserir? ";
+            cin >> qtddMusicasP;
+            int novaPlaylist[qtddMusicasP];
+            for (i = 0; i < qtddMusicasP; i++)
+            {
+                cin >> novaPlaylist[i];
+            }
+            cout << "Insira o nome da playlist: ";
+            cin >> nomePlaylist;
+            cout << "Insira o ID da playlist: ";
+            cin >> idPlaylist;
+            inserirPlaylist(listaDePlaylists, criaPlaylist(novaPlaylist, listaDeMusicas), idPlaylist, nomePlaylist);
+            break;
         }
+        case 4:
+            imprimirPlaylists(listaDePlaylists);
+            break;
         default:
             break;
         }
