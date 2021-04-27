@@ -82,7 +82,7 @@ void cadastrarMusica(musica_no *ini, musica *s){
     musica_no *novo;
     novo = (musica_no*) malloc(sizeof(musica_no));
     novo->musica = s;
-    novo->prox = ini->prox;
+    novo->prox = ini->prox; //TODO if ini->prox != null
     novo->ant = ini;
     ini->prox = novo;
 }
@@ -133,25 +133,23 @@ playlist_no* criaPlaylist(int qtddM, int musicas[], musica_no* listaDeMusicas){
     return novaPlaylist;
 }
 
-void inserirPlaylist(lplaylists_no* ini, playlist_no* p, int id, char nome[MAX_CHAR]){
+void inserirPlaylist(lplaylists_no* ini, playlist_no* p, int id, char* nome){
     lplaylists_no* novaPlaylist = (lplaylists_no*) malloc(sizeof(lplaylists_no));
     novaPlaylist->musicas = p;
-    novaPlaylist->id = id;
-    novaPlaylist->nome[MAX_CHAR] = nome[MAX_CHAR];
-    
+    novaPlaylist->id = id; 
+    strcpy(novaPlaylist->nome, nome);
+
     novaPlaylist->prox = ini->prox;
     ini->prox = novaPlaylist;
-    
 }
 
 void imprimirPlaylists(lplaylists_no* lp){
     lplaylists_no* ini = lp->prox;
     while (ini)
     {
-        cout << ini->id << endl;
+        cout << ini->nome << endl;
         ini = ini->prox;
     }
-    
 }
 
 void shuffle(){
@@ -198,11 +196,12 @@ int main(){
             imprimirListaDeMusicas(listaDeMusicas);
             break;
         case 3: {
+
             int qtddMusicasP, i, idPlaylist;
             char nomePlaylist[MAX_CHAR];
             cout << "Quantas musicas deseja inserir? ";
             cin >> qtddMusicasP;
-            cout << "Digite os IDs das musicas quye deseja inserir: ";
+            cout << "Digite os IDs das musicas que deseja inserir: ";
             int novaPlaylist[qtddMusicasP];
             for (i = 0; i < qtddMusicasP; i++)
             {
@@ -214,6 +213,7 @@ int main(){
             cin >> idPlaylist;
             inserirPlaylist(listaDePlaylists, criaPlaylist(qtddMusicasP, novaPlaylist, listaDeMusicas), idPlaylist, nomePlaylist);
             break;
+
         }
         case 4:
             cout << "IDs das playlists: ";
