@@ -38,6 +38,7 @@ void printMenu(){
     printf("1 - Cadastrar musica;\n");
     printf("2 - Lista de musicas;\n");
     printf("3 - Criar playlist;\n");
+    printf("4 - Imprimir playlists;\n");
 
     printf("Insira uma opcao: ");
 }
