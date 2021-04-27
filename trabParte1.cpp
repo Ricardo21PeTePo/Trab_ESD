@@ -154,6 +154,10 @@ void imprimirPlaylists(lplaylists_no* lp){
     
 }
 
+void shuffle(){
+    printf("/n")
+}
+
 int main(){
     int opcao = -1;
     musica_no* listaDeMusicas = criaListaDupla();
