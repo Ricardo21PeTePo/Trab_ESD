@@ -155,7 +155,15 @@ void imprimirPlaylists(lplaylists_no* lp){
 }
 
 void shuffle(){
-    printf("/n")
+    printf("/n");
+}
+
+void imprimirUmaPlaylist(){
+    printf("/n");
+}
+
+void excluirMusica() {
+    printf("/n");
 }
 
 int main(){
