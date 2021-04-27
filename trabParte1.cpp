@@ -39,6 +39,9 @@ void printMenu(){
     printf("2 - Lista de musicas;\n");
     printf("3 - Criar playlist;\n");
     printf("4 - Imprimir playlists;\n");
+    printf("5 - Shuffle;\n");
+    printf("6 - Imprimir uma playlist;\n");
+    printf("7 - Remover musica;\n");
 
     printf("Insira uma opcao: ");
 }
@@ -145,7 +148,7 @@ void imprimirPlaylists(lplaylists_no* lp){
     lplaylists_no* ini = lp->prox;
     while (ini)
     {
-        cout << ini->id;
+        cout << ini->id << endl;
         ini = ini->prox;
     }
     
@@ -187,6 +190,7 @@ int main(){
             char nomePlaylist[MAX_CHAR];
             cout << "Quantas musicas deseja inserir? ";
             cin >> qtddMusicasP;
+            cout << "Digite os IDs das musicas quye deseja inserir: ";
             int novaPlaylist[qtddMusicasP];
             for (i = 0; i < qtddMusicasP; i++)
             {
@@ -200,11 +204,24 @@ int main(){
             break;
         }
         case 4:
+            cout << "IDs das playlists: ";
             imprimirPlaylists(listaDePlaylists);
             break;
+        case 5: {
+            cout << "Shuffle /n";
+            break;
+        }
+        case 6: {
+            cout << "Imprimir uma playlist /n";
+            break;
+        }
+        case 7: {
+            cout << "Remover uma musica /n";
+        }
         default:
             break;
         }
+            
         
     } while (opcao != 0);
 
