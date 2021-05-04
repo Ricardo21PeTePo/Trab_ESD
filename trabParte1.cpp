@@ -175,7 +175,7 @@ int main(){
         switch (opcao)
         {
         case 1:{
-            musica *p = (musica*) malloc(sizeof(musica));
+            Musica *p = (Musica*) malloc(sizeof(Musica));
     
             printf("ID da musica: ");
             cin >> p->id;
