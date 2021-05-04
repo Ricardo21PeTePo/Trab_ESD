@@ -216,7 +216,7 @@ int main(){
 
         }
         case 4:
-            cout << "IDs das playlists: ";
+            cout << "Nomes das playlists: ";
             imprimirPlaylists(listaDePlaylists);
             break;
         case 5: {
