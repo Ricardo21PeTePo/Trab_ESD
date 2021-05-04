@@ -12,17 +12,17 @@ typedef struct musica {
     char titulo[MAX_CHAR];
     char artista[MAX_CHAR];
     char album[MAX_CHAR];
-    int duracao; //em segundos
-} musica;
+    int duracao;
+} Musica;
 
 typedef struct musica_no {
-    musica *musica;
+    Musica *musica;
     struct musica_no *ant;
     struct musica_no *prox;
 } musica_no;
 
 typedef struct playlist_no {
-    musica *musica;
+    Musica *musica;
     struct playlist_no *prox;
 } playlist_no;
 
