@@ -117,7 +117,7 @@ playlist_no* criaPlaylist(int qtddM, int musicas[], musica_no* listaDeMusicas){
             if(ini->musica->id == musicas[i]){
                 playlist_no* p = (playlist_no*) malloc(sizeof(playlist_no));
                 p->musica = ini->musica;
-                if (novaPlaylist->prox = novaPlaylist)
+                if (novaPlaylist->prox == novaPlaylist)
                 {
                     novaPlaylist->prox = p;
                     p->prox = novaPlaylist;
