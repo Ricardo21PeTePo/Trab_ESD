@@ -147,7 +147,9 @@ void imprimirPlaylists(lplaylists_no* lp){
     lplaylists_no* ini = lp->prox;
     while (ini)
     {
+        playlist_no* p = ini->musicas;      
         cout << ini->nome << endl;
+        
         ini = ini->prox;
     }
 }
@@ -156,8 +158,26 @@ void shuffle(){
     printf("/n");
 }
 
-void imprimirUmaPlaylist(){
-    printf("/n");
+void imprimirUmaPlaylist(char* nome, lplaylists_no* ini){
+    lplaylists_no* lp = ini->prox;
+    while (lp)
+    {
+        if (strcmp(lp->nome, nome) == 0)
+        {
+            playlist_no* p = lp->musicas->prox;
+            while (p->musica)
+            {
+                cout << p->musica->titulo << endl;
+                p = p->prox;
+            }
+            
+            return;
+        }
+        
+        lp = lp->prox;
+    }
+    cout << "playlist nao encontrada" << endl;
+    
 }
 
 void excluirMusica() {
@@ -224,7 +244,10 @@ int main(){
             break;
         }
         case 6: {
-            cout << "Imprimir uma playlist /n";
+            char nomeSearch[MAX_CHAR] = "";
+            cout << "Insira o nome da playlist que deseja ver: ";
+            cin >> nomeSearch;
+            imprimirUmaPlaylist(nomeSearch, listaDePlaylists);
             break;
         }
         case 7: {
