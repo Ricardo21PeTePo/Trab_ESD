@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <iostream>
+#include <time.h>
 
 using namespace std;
 
@@ -155,8 +156,25 @@ void imprimirPlaylists(lplaylists_no* lp){
     }
 }
 
-void shuffle(){
-    printf("/n");
+void shuffle(char* np, lplaylists_no* ini){
+    int i, cont, r;
+    lplaylists_no* lp = ini->prox;
+    while (lp){
+        if (strcmp(lp->nome, np) == 0){
+            playlist_no* p = lp->musicas->prox;
+            while (p->musica){
+                cont++;
+                p = p->prox;
+            }
+        }
+        lp = lp->prox;
+    }
+    for (i = 0; i < cont; i++){
+        r = rand() % cont;
+        cout << r;
+    }
+    
+    
 }
 
 void imprimirUmaPlaylist(char* nome, lplaylists_no* ini){
@@ -184,6 +202,7 @@ void excluirMusica() {
 }
 
 int main(){
+    srand(time(NULL));
     int opcao = -1;
     musica_no* listaDeMusicas = criaListaDupla();
     lplaylists_no* listaDePlaylists = criaListaEncadeada();
@@ -240,7 +259,10 @@ int main(){
             imprimirPlaylists(listaDePlaylists);
             break;
         case 5: {
-            cout << "Shuffle /n";
+            char nomeShuffle[MAX_CHAR] = "";
+            cout << "Insira o nome da playlist desejada: ";
+            cin >> nomeShuffle;
+            shuffle(nomeShuffle, listaDePlaylists);
             break;
         }
         case 6: {
