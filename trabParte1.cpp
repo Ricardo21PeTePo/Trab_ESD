@@ -109,7 +109,7 @@ playlist_no* criaPlaylist(int qtddM, int musicas[], musica_no* listaDeMusicas){
     int i;
     musica_no* ini = listaDeMusicas->prox;
     playlist_no* novaPlaylist = criaListaCircular();
-    for (i = 0; i < qtddM; i++)
+    for (i = qtddM-1; i >= 0; i--)
     {
         while (ini)
         {
@@ -128,9 +128,11 @@ playlist_no* criaPlaylist(int qtddM, int musicas[], musica_no* listaDeMusicas){
             }
             ini = ini->prox;
         }
+        ini = listaDeMusicas->prox;
     }
     return novaPlaylist;
 }
+
 
 void inserirPlaylist(lplaylists_no* ini, playlist_no* p, int id, char* nome){
     lplaylists_no* novaPlaylist = (lplaylists_no*) malloc(sizeof(lplaylists_no));
@@ -148,7 +150,7 @@ void imprimirPlaylists(lplaylists_no* lp){
     {
         playlist_no* p = ini->musicas;      
         cout << ini->nome << endl;
-        
+        cout << "----------";
         ini = ini->prox;
     }
 }
@@ -214,7 +216,7 @@ int main(){
             break;
         case 3: {
 
-            int qtddMusicasP, i, idPlaylist;
+            int qtddMusicasP, i, idPlaylist, j;
             char nomePlaylist[MAX_CHAR];
             cout << "Quantas musicas deseja inserir? ";
             cin >> qtddMusicasP;
@@ -228,6 +230,7 @@ int main(){
             cin >> nomePlaylist;
             cout << "Insira o ID da playlist: ";
             cin >> idPlaylist;
+                        
             inserirPlaylist(listaDePlaylists, criaPlaylist(qtddMusicasP, novaPlaylist, listaDeMusicas), idPlaylist, nomePlaylist);
             break;
 
