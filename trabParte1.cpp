@@ -170,10 +170,8 @@ void imprimirUmaPlaylist(char* nome, lplaylists_no* ini){
                 cout << p->musica->titulo << endl;
                 p = p->prox;
             }
-            
             return;
         }
-        
         lp = lp->prox;
     }
     cout << "playlist nao encontrada" << endl;
