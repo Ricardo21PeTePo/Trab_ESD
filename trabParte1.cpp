@@ -73,7 +73,6 @@ int qtddMusicasCadastradas(musica_no* ini){
         p = p->prox;
     }
     return x;
-    
 }
 
 
