@@ -12,17 +12,17 @@ typedef struct musica {
     char titulo[MAX_CHAR];
     char artista[MAX_CHAR];
     char album[MAX_CHAR];
-    int duracao; //em segundos
-} musica;
+    int duracao;
+} Musica;
 
 typedef struct musica_no {
-    musica *musica;
+    Musica *musica;
     struct musica_no *ant;
     struct musica_no *prox;
 } musica_no;
 
 typedef struct playlist_no {
-    musica *musica;
+    Musica *musica;
     struct playlist_no *prox;
 } playlist_no;
 
@@ -146,7 +146,9 @@ void imprimirPlaylists(lplaylists_no* lp){
     lplaylists_no* ini = lp->prox;
     while (ini)
     {
+        playlist_no* p = ini->musicas;      
         cout << ini->nome << endl;
+        
         ini = ini->prox;
     }
 }
@@ -155,8 +157,24 @@ void shuffle(){
     printf("/n");
 }
 
-void imprimirUmaPlaylist(){
-    printf("/n");
+void imprimirUmaPlaylist(char* nome, lplaylists_no* ini){
+    lplaylists_no* lp = ini->prox;
+    while (lp)
+    {
+        if (strcmp(lp->nome, nome) == 0)
+        {
+            playlist_no* p = lp->musicas->prox;
+            while (p->musica)
+            {
+                cout << p->musica->titulo << endl;
+                p = p->prox;
+            }
+            return;
+        }
+        lp = lp->prox;
+    }
+    cout << "playlist nao encontrada" << endl;
+    
 }
 
 void excluirMusica() {
@@ -174,7 +192,7 @@ int main(){
         switch (opcao)
         {
         case 1:{
-            musica *p = (musica*) malloc(sizeof(musica));
+            Musica *p = (Musica*) malloc(sizeof(Musica));
     
             printf("ID da musica: ");
             cin >> p->id;
@@ -215,7 +233,7 @@ int main(){
 
         }
         case 4:
-            cout << "IDs das playlists: ";
+            cout << "Nomes das playlists: ";
             imprimirPlaylists(listaDePlaylists);
             break;
         case 5: {
@@ -223,7 +241,10 @@ int main(){
             break;
         }
         case 6: {
-            cout << "Imprimir uma playlist /n";
+            char nomeSearch[MAX_CHAR] = "";
+            cout << "Insira o nome da playlist que deseja ver: ";
+            cin >> nomeSearch;
+            imprimirUmaPlaylist(nomeSearch, listaDePlaylists);
             break;
         }
         case 7: {
