@@ -82,11 +82,13 @@ void cadastrarMusica(musica_no *ini, musica *s){
     musica_no *novo;
     novo = (musica_no*) malloc(sizeof(musica_no));
     novo->musica = s;
-    if (ini->prox != NULL)
-    {
-        novo->prox = ini->prox; //TODO if ini->prox != null
-    }
+    novo->prox = ini->prox;
     novo->ant = ini;
+
+    if (ini->prox)
+    {
+        ini->prox->ant = novo;
+    }
     ini->prox = novo;
 }
 
@@ -227,6 +229,7 @@ void excluirMusica(char* nome, lplaylists_no* play, musica_no* musi) {
     while (lm) {
         if (strcmp(lm->musica->titulo, nome) == 0)
         {
+            lm->ant->prox = lm->prox;
             delete lm;
             break;
         }
