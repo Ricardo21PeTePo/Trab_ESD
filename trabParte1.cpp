@@ -82,7 +82,10 @@ void cadastrarMusica(musica_no *ini, musica *s){
     musica_no *novo;
     novo = (musica_no*) malloc(sizeof(musica_no));
     novo->musica = s;
-    novo->prox = ini->prox; //TODO if ini->prox != null
+    if (ini->prox != NULL)
+    {
+        novo->prox = ini->prox; //TODO if ini->prox != null
+    }
     novo->ant = ini;
     ini->prox = novo;
 }
@@ -92,17 +95,21 @@ void imprimirListaDeMusicas(musica_no* ini){
     p = ini->prox;
     while (p)
     {
-        cout << p->musica->titulo << endl;
-        cout << p->musica->artista << endl;
-        cout << p->musica->album << endl;
-        int h, m, s;
-        h = (p->musica->duracao/3600); 
-	    m = (p->musica->duracao -(3600*h))/60;
-	    s = (p->musica->duracao -(3600*h)-(m*60));
-        printf("%d:%d:%d\n",h,m,s);
-        printf("------------------------\n");
-
-        p = p->prox;
+        if (p->musica)
+        {
+            cout << p->musica->titulo << endl;
+            cout << p->musica->artista << endl;
+            cout << p->musica->album << endl;
+            int h, m, s;
+            h = (p->musica->duracao/3600); 
+            m = (p->musica->duracao -(3600*h))/60;
+            s = (p->musica->duracao -(3600*h)-(m*60));
+            printf("%d:%d:%d\n",h,m,s);
+            printf("------------------------\n");
+            p = p->prox;
+        } else {
+            break;
+        }
     }
 }
 
@@ -220,7 +227,8 @@ void excluirMusica(char* nome, lplaylists_no* play, musica_no* musi) {
     while (lm) {
         if (strcmp(lm->musica->titulo, nome) == 0)
         {
-            delete lm->prox;
+            delete lm;
+            break;
         }
         lm = lm->prox;
     }
