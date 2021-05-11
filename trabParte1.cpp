@@ -157,7 +157,8 @@ void imprimirPlaylists(lplaylists_no* lp){
 }
 
 void shuffle(char* np, lplaylists_no* ini){
-    int i, cont, r;
+    int i, cont = 0, j;
+    
     lplaylists_no* lp = ini->prox;
     while (lp){
         if (strcmp(lp->nome, np) == 0){
@@ -169,12 +170,26 @@ void shuffle(char* np, lplaylists_no* ini){
         }
         lp = lp->prox;
     }
+    int arrayRand[cont];
+    int check = 0;
     for (i = 0; i < cont; i++){
-        r = rand() % cont;
-        cout << r;
+        int r = rand() % cont;
+        for (j = 0; j < cont; j++)
+        {
+            if (arrayRand[j] == r)
+            {
+                check = 1;
+            } 
+            
+        }
+        if (check == 0)
+        {
+            arrayRand[i] = r;
+        } else {
+            i--;
+        }
+        check = 0;     
     }
-    
-    
 }
 
 void imprimirUmaPlaylist(char* nome, lplaylists_no* ini){
