@@ -176,9 +176,11 @@ void shuffle(char* np, lplaylists_no* ini){
                 cont++;
                 p = p->prox;
             }
+            break;
         }
         lp = lp->prox;
     }
+    /*
     int arrayRand[cont];
     int check = 0;
     for (i = 0; i < cont; i++){
@@ -199,6 +201,27 @@ void shuffle(char* np, lplaylists_no* ini){
         }
         check = 0;     
     }
+    */
+
+    playlist_no* lpm = lp->musicas->prox;
+    int counterAux = 0;
+    while (lpm && counterAux < cont)
+    {
+        int r = rand() % cont;
+        int counter = 0;
+        playlist_no* lpms = lpm;
+        while (counter < r)
+        {
+            lpms = lpms->prox;
+            counter++;  
+        }
+        Musica* m = lpms->musica;
+        lpms->musica = lpm->musica;
+        lpm->musica = m;
+        lpm = lpm->prox;
+        counterAux++;
+    }
+    
 }
 
 void imprimirUmaPlaylist(char* nome, lplaylists_no* ini){
@@ -226,6 +249,7 @@ void excluirMusica(char* nome, lplaylists_no* play, musica_no* musi) {
 
     musica_no* lm = musi->prox;
     lplaylists_no* lp = play->prox;
+
     while (lm) {
         if (strcmp(lm->musica->titulo, nome) == 0)
         {
