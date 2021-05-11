@@ -212,8 +212,18 @@ void imprimirUmaPlaylist(char* nome, lplaylists_no* ini){
     
 }
 
-void excluirMusica() {
-    printf("/n");
+void excluirMusica(char* nome, lplaylists_no* play, musica_no* musi) {
+    int i;
+
+    musica_no* lm = musi->prox;
+    lplaylists_no* lp = play->prox;
+    while (lm) {
+        if (strcmp(lm->musica->titulo, nome) == 0)
+        {
+            delete lm->prox;
+        }
+        lm = lm->prox;
+    }
 }
 
 int main(){
@@ -288,7 +298,11 @@ int main(){
             break;
         }
         case 7: {
-            cout << "Remover uma musica /n";
+            char nomeExcluir[MAX_CHAR] = "";
+            cout << "insira o nome da musica desejada: ";
+            cin >> nomeExcluir;
+            excluirMusica(nomeExcluir, listaDePlaylists, listaDeMusicas);
+            break;
         }
         default:
             break;
