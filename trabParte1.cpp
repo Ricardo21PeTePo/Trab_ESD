@@ -180,28 +180,6 @@ void shuffle(char* np, lplaylists_no* ini){
         }
         lp = lp->prox;
     }
-    /*
-    int arrayRand[cont];
-    int check = 0;
-    for (i = 0; i < cont; i++){
-        int r = rand() % cont;
-        for (j = 0; j < cont; j++)
-        {
-            if (arrayRand[j] == r)
-            {
-                check = 1;
-            } 
-            
-        }
-        if (check == 0)
-        {
-            arrayRand[i] = r;
-        } else {
-            i--;
-        }
-        check = 0;     
-    }
-    */
 
     playlist_no* lpm = lp->musicas->prox;
     int counterAux = 0;
@@ -279,15 +257,18 @@ void excluirMusica(char* nome, lplaylists_no* play, musica_no* musi) {
         lm = lm->prox;
     }
 
-    playlist_no* lp = play->prox->musicas->prox;
-    while (lp)
+    lplaylists_no* lp = play->prox;
+    playlist_no* p = lp->musicas->prox;
+    
+    while (true)
     {
-        if (strcmp(lp->musica->titulo, nome) == 0){
-            
-            delete lp;
+        Musica* m = p->musica;
+        if (strcmp(m->titulo, nome) == 0){
+            delete m;
             break;
+        } else {
+            p = p->prox;
         }
-        lp = lp->prox;
     }
     
 
@@ -309,15 +290,31 @@ int main(){
     
             printf("ID da musica: ");
             cin >> p->id;
+            if (cin.fail())
+            {
+                cout << "digite um número inteiro!" << endl;
+                cin.clear();
+                cin.ignore();
+                break;
+            } 
+                       
             printf("Titulo da musica: ");
             cin >> p->titulo;
             printf("Artista da musica: ");
             cin >> p->artista;
             printf("Album da musica: ");
             cin >> p->album;
+
             printf("Duracao da musica: ");
             cin >> p->duracao;
-
+            if (cin.fail())
+            {
+                cout << "digite um número inteiro!" << endl;
+                cin.clear();
+                cin.ignore();
+                break;
+            }
+            
             cadastrarMusica(listaDeMusicas, p);
             break;
         }
@@ -347,7 +344,7 @@ int main(){
 
         }
         case 4:
-            cout << "Nomes das playlists: ";
+            cout << "Nomes das playlists: " << endl;
             imprimirPlaylists(listaDePlaylists);
             break;
         case 5: {
