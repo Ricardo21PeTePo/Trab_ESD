@@ -231,13 +231,24 @@ void shuffle(char* np, lplaylists_no* ini){
 
 void imprimirUmaPlaylist(char* nome, lplaylists_no* ini){
     lplaylists_no* lp = ini->prox;
-    int contadorAux = 0;
+    int contadorAux = 0, cont=0;
+    while (lp){
+        if (strcmp(lp->nome, nome) == 0){
+            playlist_no* p = lp->musicas->prox;
+            while (p->musica){
+                cont++;
+                p = p->prox;
+            }
+            break;
+        }
+        lp = lp->prox;
+    }
     while (lp)
     {
         if (strcmp(lp->nome, nome) == 0)
         {
             playlist_no* p = lp->musicas->prox;
-            while (contadorAux < 3){
+            while (contadorAux < cont){
                 if (p->musica == NULL)
                 {
                     p = p->prox;
