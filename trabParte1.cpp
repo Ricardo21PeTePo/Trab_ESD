@@ -324,20 +324,47 @@ int main(){
             break;
         case 3: {
 
-            int qtddMusicasP, i, idPlaylist, j;
+            int qtddMusicasP, i, idPlaylist, check = 0;
             char nomePlaylist[MAX_CHAR];
             cout << "Quantas musicas deseja inserir? ";
             cin >> qtddMusicasP;
+            if (cin.fail())
+            {
+                cout << "digite um número inteiro!" << endl;
+                cin.clear();
+                cin.ignore();
+                break;
+            }
             cout << "Digite os IDs das musicas que deseja inserir: ";
             int novaPlaylist[qtddMusicasP];
             for (i = 0; i < qtddMusicasP; i++)
             {
                 cin >> novaPlaylist[i];
+                if (cin.fail())
+                {
+                    cout << "digite um número inteiro!" << endl;
+                    cin.clear();
+                    cin.ignore();
+                    check = 1;
+                    break;
+                }
             }
+            if (check == 1)
+            {
+                break;
+            }
+            
             cout << "Insira o nome da playlist: ";
             cin >> nomePlaylist;
             cout << "Insira o ID da playlist: ";
             cin >> idPlaylist;
+            if (cin.fail())
+            {
+                cout << "digite um número inteiro!" << endl;
+                cin.clear();
+                cin.ignore();
+                break;
+            }
                         
             inserirPlaylist(listaDePlaylists, criaPlaylist(qtddMusicasP, novaPlaylist, listaDeMusicas), idPlaylist, nomePlaylist);
             break;
