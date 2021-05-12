@@ -245,10 +245,7 @@ void imprimirUmaPlaylist(char* nome, lplaylists_no* ini){
 }
 
 void excluirMusica(char* nome, lplaylists_no* play, musica_no* musi) {
-    int i;
-
     musica_no* lm = musi->prox;
-    lplaylists_no* lp = play->prox;
 
     while (lm) {
         if (strcmp(lm->musica->titulo, nome) == 0)
@@ -259,6 +256,18 @@ void excluirMusica(char* nome, lplaylists_no* play, musica_no* musi) {
         }
         lm = lm->prox;
     }
+
+    playlist_no* lp = play->prox->musicas->prox;
+    while (lp)
+    {
+        if (strcmp(lp->musica->titulo, nome) == 0){
+            lp = lp->prox;
+            delete lp;
+            break;
+        }
+    }
+    
+
 }
 
 int main(){
