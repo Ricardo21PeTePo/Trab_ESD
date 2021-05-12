@@ -160,7 +160,7 @@ void imprimirPlaylists(lplaylists_no* lp){
     {
         playlist_no* p = ini->musicas;      
         cout << ini->nome << endl;
-        cout << "----------";
+        cout << "----------" << endl;
         ini = ini->prox;
     }
 }
@@ -207,7 +207,7 @@ void shuffle(char* np, lplaylists_no* ini){
     int counterAux = 0;
     while (lpm && counterAux < cont)
     {
-        int r = rand() % cont;
+        int r = rand() % (cont*2);
         int counter = 0;
         playlist_no* lpms = lpm;
         while (counter < r)
@@ -215,6 +215,11 @@ void shuffle(char* np, lplaylists_no* ini){
             lpms = lpms->prox;
             counter++;  
         }
+        if (lpms->musica == NULL)
+        {
+            lpms = lpms->prox;
+        }
+        
         Musica* m = lpms->musica;
         lpms->musica = lpm->musica;
         lpm->musica = m;
@@ -226,15 +231,21 @@ void shuffle(char* np, lplaylists_no* ini){
 
 void imprimirUmaPlaylist(char* nome, lplaylists_no* ini){
     lplaylists_no* lp = ini->prox;
+    int contadorAux = 0;
     while (lp)
     {
         if (strcmp(lp->nome, nome) == 0)
         {
             playlist_no* p = lp->musicas->prox;
-            while (p->musica)
-            {
+            while (contadorAux < 3){
+                if (p->musica == NULL)
+                {
+                    p = p->prox;
+                }
                 cout << p->musica->titulo << endl;
+                
                 p = p->prox;
+                contadorAux++;
             }
             return;
         }
@@ -261,10 +272,11 @@ void excluirMusica(char* nome, lplaylists_no* play, musica_no* musi) {
     while (lp)
     {
         if (strcmp(lp->musica->titulo, nome) == 0){
-            lp = lp->prox;
+            
             delete lp;
             break;
         }
+        lp = lp->prox;
     }
     
 
