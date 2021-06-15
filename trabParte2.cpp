@@ -18,8 +18,9 @@ typedef struct musica {
 
 typedef struct musica_no {
     Musica *musica;
-    struct musica_no *ant;
-    struct musica_no *prox;
+    int num = this->musica->id;
+    int bal;
+    struct musica_no *esq, *dir;
 } musica_no;
 
 typedef struct playlist_no {
@@ -46,17 +47,27 @@ void printMenu(){
 
     printf("Insira uma opcao: ");
 }
+
+int alturaArvore(musica_no* t) {
+  if (t == NULL)
+    return 0;
+  int hesq = alturaArvore(t->esq);  
+  int hdir = alturaArvore(t->dir);
+  return hesq > hdir ? hesq + 1 : hdir + 1;
+}
+
 lplaylists_no* criaListaEncadeada(){
     lplaylists_no *cabeca = (lplaylists_no*) malloc(sizeof(lplaylists_no));
     cabeca->prox = NULL;
     return cabeca;
 }
 
-musica_no* criaListaDupla(){
-    musica_no *cabeca = (musica_no*) malloc(sizeof(musica_no));
-    cabeca->prox = NULL;
-    cabeca->ant = NULL;
-    return cabeca;
+musica_no* criaArvore(Musica* m, musica_no* esq, musica_no* dir){
+    musica_no *musica = (musica_no*) malloc(sizeof(musica_no));
+    musica->bal = alturaArvore(dir) - alturaArvore(esq);
+    musica->esq = esq;
+    musica->dir = dir;
+    return musica;
 }
 
 playlist_no* criaListaCircular(){
@@ -66,30 +77,98 @@ playlist_no* criaListaCircular(){
 }
 
 int qtddMusicasCadastradas(musica_no* ini){
-    int x = 0;
     musica_no* p = ini;
-    while (p)
+    if (p == NULL)
     {
-        x++;
-        p = p->prox;
+        return 0;
+    } else {
+        return qtddMusicasCadastradas(p->esq) + qtddMusicasCadastradas(p->dir) + 1;
     }
-    return x;
 }
 
+void LL(musica_no** r) {
+    musica_no* b = *r;
+    musica_no* a = b->esq;
+    b->esq = a->dir;
+    a->dir = b;
+    a->bal = 0;
+    b->bal = 0;
+    *r = a;
+}
 
-
-void cadastrarMusica(musica_no *ini, musica *s){
-    musica_no *novo;
-    novo = (musica_no*) malloc(sizeof(musica_no));
-    novo->musica = s;
-    novo->prox = ini->prox;
-    novo->ant = ini;
-
-    if (ini->prox)
-    {
-        ini->prox->ant = novo;
+void LR(musica_no** r) {
+    musica_no *c = *r;
+    musica_no *a = c->esq;
+    musica_no *b = a->dir;
+    c->esq = b->dir;
+    a->dir = b->esq;
+    b->esq = a;
+    b->dir = c;
+    switch(b->bal) {
+    case -1:
+        a->bal = 0;
+        c->bal = 1;
+        break;
+    case 0:
+        a->bal = 0;
+        c->bal = 0;
+        break;
+    case +1:
+        a->bal = -1;
+        c->bal = 0;
+        break;
     }
-    ini->prox = novo;
+    b->bal = 0;
+    *r = b;
+}
+
+int cadastrarMusica(musica_no **ini, musica *s, int *cresceu){
+    if (*ini == NULL){
+        *ini = criaArvore(s, NULL, NULL);
+        *cresceu = 1;
+        return 1;
+    } 
+
+    if (s == (*ini)->musica)
+    {
+        return 0;
+    }
+
+    if (s->id < (*ini)->num)
+    {
+        if (cadastrarMusica(&(*ini)->esq, s, cresceu))
+        {
+            if (*cresceu)
+            {
+                switch ((*ini)->bal)
+                {
+                case -1:
+                    if ((*ini)->esq->bal == -1)
+                    {
+                        LL(ini);
+                    } else {
+                        LR(ini);
+                    }
+                    *cresceu = 0;
+                    break;
+                
+                case 0:
+                    (*ini)->bal = -1;
+                    *cresceu = 1;
+                    break;
+                case +1:
+                    (*ini)->bal = 0;
+                    *cresceu = 0;
+                    break;
+                }
+            }
+            
+        }
+        
+    }
+    
+    
+    
 }
 
 void imprimirListaDeMusicas(musica_no* ini){
