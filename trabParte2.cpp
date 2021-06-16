@@ -96,6 +96,16 @@ void LL(musica_no** r) {
     *r = a;
 }
 
+void RR(musica_no** r) {
+    musica_no* a = *r;
+    musica_no* b = a->dir;
+    a->dir = b->esq;
+    b->esq = a;
+    a->bal = 0;
+    b->bal = 0;
+    *r = b;
+}
+
 void LR(musica_no** r) {
     musica_no *c = *r;
     musica_no *a = c->esq;
@@ -122,7 +132,33 @@ void LR(musica_no** r) {
     *r = b;
 }
 
-int cadastrarMusica(musica_no **ini, musica *s, int *cresceu){
+void RL(musica_no** r) {
+    musica_no *a = *r;
+    musica_no *c = a->dir;
+    musica_no *b = c->esq;
+    c->esq = b->dir;
+    a->dir = b->esq;
+    b->esq = a;
+    b->dir = c;
+    switch(b->bal) {
+    case -1:
+        a->bal = 0;
+        c->bal = 1;
+        break;
+    case 0:
+        a->bal = 0;
+        c->bal = 0;
+        break;
+    case +1:
+        a->bal = -1;
+        c->bal = 0;
+        break;
+    }
+    b->bal = 0;
+    *r = b;  
+}
+
+int auxCadastra(musica_no **ini, musica *s, int *cresceu){
     if (*ini == NULL){
         *ini = criaArvore(s, NULL, NULL);
         *cresceu = 1;
@@ -136,7 +172,7 @@ int cadastrarMusica(musica_no **ini, musica *s, int *cresceu){
 
     if (s->id < (*ini)->num)
     {
-        if (cadastrarMusica(&(*ini)->esq, s, cresceu))
+        if (auxCadastra(&(*ini)->esq, s, cresceu))
         {
             if (*cresceu)
             {
@@ -162,35 +198,54 @@ int cadastrarMusica(musica_no **ini, musica *s, int *cresceu){
                     break;
                 }
             }
-            
         }
-        
     }
-    
-    
-    
+
+    if(auxCadastra(&(*ini)->dir, s, cresceu)){
+        if (*cresceu) {
+            switch ((*ini)->bal) {
+            case -1:
+                (*ini)->bal = 0;
+                *cresceu = 0;
+                break;
+            case 0:
+                (*ini)->bal = +1;
+                *cresceu = 1;
+                break;
+            case +1:
+                if ((*ini)->dir->bal == 1) {
+                    RR(ini);
+                } else {
+                    RL(ini);
+                }
+                *cresceu = 0;
+                break;
+            }
+        }
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int cadastrarMusica(musica_no **ini, musica *s){
+    int cresceu;
+    return auxCadastra(ini, s, &cresceu);
 }
 
 void imprimirListaDeMusicas(musica_no* ini){
-    musica_no* p;
-    p = ini->prox;
-    while (p)
-    {
-        if (p->musica)
-        {
-            cout << p->musica->titulo << endl;
-            cout << p->musica->artista << endl;
-            cout << p->musica->album << endl;
-            int h, m, s;
-            h = (p->musica->duracao/3600); 
-            m = (p->musica->duracao -(3600*h))/60;
-            s = (p->musica->duracao -(3600*h)-(m*60));
-            printf("%d:%d:%d\n",h,m,s);
-            printf("------------------------\n");
-            p = p->prox;
-        } else {
-            break;
-        }
+    if(ini != NULL) {
+        imprimirListaDeMusicas(ini->esq);
+        cout << ini->musica->titulo << endl;
+        cout << ini->musica->artista << endl;
+        cout << ini->musica->album << endl;
+        int h, m, s;
+        h = (ini->musica->duracao/3600); 
+        m = (ini->musica->duracao -(3600*h))/60;
+        s = (ini->musica->duracao -(3600*h)-(m*60));
+        printf("%d:%d:%d\n",h,m,s);
+        printf("------------------------\n");
+        imprimirListaDeMusicas(ini->dir);
     }
 }
 
