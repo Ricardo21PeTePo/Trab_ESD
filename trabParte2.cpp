@@ -229,9 +229,37 @@ int auxCadastra(musica_no **ini, musica *s, int *cresceu){
     }
 }
 
-int cadastrarMusica(musica_no **ini, musica *s){
-    int cresceu;
-    return auxCadastra(ini, s, &cresceu);
+int cadastrarMusica(musica_no *ini, musica *s){
+    // int cresceu;
+    // return auxCadastra(ini, s, &cresceu);
+
+    if (s->id < ini->num)
+    {
+        if (ini->esq != NULL)
+        {
+            cadastrarMusica(ini->esq, s);
+        } else {
+            ini->esq = new musica_no;
+            ini->esq->musica = s;
+            ini->esq->num = s->id;
+            ini->esq->esq = NULL;
+            ini->esq->dir = NULL;
+        }
+        
+    } else if (s->id > ini->num)
+    {
+        if (ini->dir != NULL)
+        {
+            ini->dir = new musica_no;
+            ini->dir->musica = s;
+            ini->dir->num = s->id;
+            ini->dir->esq = NULL;
+            ini->dir->dir = NULL;
+        }
+        
+    }
+    
+    
 }
 
 void imprimirListaDeMusicas(musica_no* ini){
@@ -430,13 +458,13 @@ int main(){
     // lplaylists_no* listaDePlaylists = criaListaEncadeada();
 
     Musica c;
-    c.id = 0;
+    c.id = 6;
     cin >> c.titulo;
     cin >> c.artista;
     cin >> c.album;
     cin >> c.duracao;
 
-    cadastrarMusica(&listaDeMusicas, &c);
+    cadastrarMusica(listaDeMusicas, &c);
     imprimirListaDeMusicas(listaDeMusicas);
 
     // do
