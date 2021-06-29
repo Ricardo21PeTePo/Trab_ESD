@@ -427,7 +427,16 @@ int main(){
     cin >> b.album;
     cin >> b.duracao;
     musica_no* listaDeMusicas = criaArvore(&m, NULL, criaArvore(&b, NULL, NULL));
-    lplaylists_no* listaDePlaylists = criaListaEncadeada();
+    // lplaylists_no* listaDePlaylists = criaListaEncadeada();
+
+    Musica c;
+    c.id = 0;
+    cin >> c.titulo;
+    cin >> c.artista;
+    cin >> c.album;
+    cin >> c.duracao;
+
+    cadastrarMusica(&listaDeMusicas, &c);
     imprimirListaDeMusicas(listaDeMusicas);
 
     // do
@@ -466,7 +475,11 @@ int main(){
     //             break;
     //         }
             
-    //         cadastrarMusica(listaDeMusicas, p);
+    //         if (listaDeMusicas == NULL)
+    //         {
+    //             listaDeMusicas = criaArvore(p, NULL, NULL);
+    //         } else cadastrarMusica(&listaDeMusicas, p);
+            
     //         break;
     //     }
             

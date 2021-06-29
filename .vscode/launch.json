@@ -8,7 +8,7 @@
             "name": "(gdb) Iniciar",
             "type": "cppdbg",
             "request": "launch",
-            "program": "insira o nome do programa, por exemplo ${workspaceFolder}/a.exe",
+            "program": "${workspaceFolder}/trabParte2.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
