@@ -18,8 +18,7 @@ typedef struct musica {
 
 typedef struct musica_no {
     Musica *musica;
-    int num = this->musica->id;
-    int bal;
+    // int bal;
     struct musica_no *esq, *dir;
 } musica_no;
 
@@ -65,7 +64,7 @@ lplaylists_no* criaListaEncadeada(){
 musica_no* criaArvore(Musica* m, musica_no* esq, musica_no* dir){
     musica_no *musica = (musica_no*) malloc(sizeof(musica_no));
     musica->musica = m;
-    musica->bal = alturaArvore(dir) - alturaArvore(esq);
+    // musica->bal = alturaArvore(dir) - alturaArvore(esq);
     musica->esq = esq;
     musica->dir = dir;
     return musica;
@@ -87,153 +86,153 @@ int qtddMusicasCadastradas(musica_no* ini){
     }
 }
 
-void LL(musica_no** r) {
-    musica_no* b = *r;
-    musica_no* a = b->esq;
-    b->esq = a->dir;
-    a->dir = b;
-    a->bal = 0;
-    b->bal = 0;
-    *r = a;
-}
+// void LL(musica_no** r) {
+//     musica_no* b = *r;
+//     musica_no* a = b->esq;
+//     b->esq = a->dir;
+//     a->dir = b;
+//     a->bal = 0;
+//     b->bal = 0;
+//     *r = a;
+// }
 
-void RR(musica_no** r) {
-    musica_no* a = *r;
-    musica_no* b = a->dir;
-    a->dir = b->esq;
-    b->esq = a;
-    a->bal = 0;
-    b->bal = 0;
-    *r = b;
-}
+// void RR(musica_no** r) {
+//     musica_no* a = *r;
+//     musica_no* b = a->dir;
+//     a->dir = b->esq;
+//     b->esq = a;
+//     a->bal = 0;
+//     b->bal = 0;
+//     *r = b;
+// }
 
-void LR(musica_no** r) {
-    musica_no *c = *r;
-    musica_no *a = c->esq;
-    musica_no *b = a->dir;
-    c->esq = b->dir;
-    a->dir = b->esq;
-    b->esq = a;
-    b->dir = c;
-    switch(b->bal) {
-    case -1:
-        a->bal = 0;
-        c->bal = 1;
-        break;
-    case 0:
-        a->bal = 0;
-        c->bal = 0;
-        break;
-    case +1:
-        a->bal = -1;
-        c->bal = 0;
-        break;
-    }
-    b->bal = 0;
-    *r = b;
-}
+// void LR(musica_no** r) {
+//     musica_no *c = *r;
+//     musica_no *a = c->esq;
+//     musica_no *b = a->dir;
+//     c->esq = b->dir;
+//     a->dir = b->esq;
+//     b->esq = a;
+//     b->dir = c;
+//     switch(b->bal) {
+//     case -1:
+//         a->bal = 0;
+//         c->bal = 1;
+//         break;
+//     case 0:
+//         a->bal = 0;
+//         c->bal = 0;
+//         break;
+//     case +1:
+//         a->bal = -1;
+//         c->bal = 0;
+//         break;
+//     }
+//     b->bal = 0;
+//     *r = b;
+// }
 
-void RL(musica_no** r) {
-    musica_no *a = *r;
-    musica_no *c = a->dir;
-    musica_no *b = c->esq;
-    c->esq = b->dir;
-    a->dir = b->esq;
-    b->esq = a;
-    b->dir = c;
-    switch(b->bal) {
-    case -1:
-        a->bal = 0;
-        c->bal = 1;
-        break;
-    case 0:
-        a->bal = 0;
-        c->bal = 0;
-        break;
-    case +1:
-        a->bal = -1;
-        c->bal = 0;
-        break;
-    }
-    b->bal = 0;
-    *r = b;  
-}
+// void RL(musica_no** r) {
+//     musica_no *a = *r;
+//     musica_no *c = a->dir;
+//     musica_no *b = c->esq;
+//     c->esq = b->dir;
+//     a->dir = b->esq;
+//     b->esq = a;
+//     b->dir = c;
+//     switch(b->bal) {
+//     case -1:
+//         a->bal = 0;
+//         c->bal = 1;
+//         break;
+//     case 0:
+//         a->bal = 0;
+//         c->bal = 0;
+//         break;
+//     case +1:
+//         a->bal = -1;
+//         c->bal = 0;
+//         break;
+//     }
+//     b->bal = 0;
+//     *r = b;  
+// }
 
-int auxCadastra(musica_no **ini, musica *s, int *cresceu){
-    if (*ini == NULL){
-        *ini = criaArvore(s, NULL, NULL);
-        *cresceu = 1;
-        return 1;
-    } 
+// int auxCadastra(musica_no **ini, musica *s, int *cresceu){
+//     if (*ini == NULL){
+//         *ini = criaArvore(s, NULL, NULL);
+//         *cresceu = 1;
+//         return 1;
+//     } 
 
-    if (s == (*ini)->musica)
-    {
-        return 0;
-    }
+//     if (s == (*ini)->musica)
+//     {
+//         return 0;
+//     }
 
-    if (s->id < (*ini)->num)
-    {
-        if (auxCadastra(&(*ini)->esq, s, cresceu))
-        {
-            if (*cresceu)
-            {
-                switch ((*ini)->bal)
-                {
-                case -1:
-                    if ((*ini)->esq->bal == -1)
-                    {
-                        LL(ini);
-                    } else {
-                        LR(ini);
-                    }
-                    *cresceu = 0;
-                    break;
+//     if (s->id < (*ini)->num)
+//     {
+//         if (auxCadastra(&(*ini)->esq, s, cresceu))
+//         {
+//             if (*cresceu)
+//             {
+//                 switch ((*ini)->bal)
+//                 {
+//                 case -1:
+//                     if ((*ini)->esq->bal == -1)
+//                     {
+//                         LL(ini);
+//                     } else {
+//                         LR(ini);
+//                     }
+//                     *cresceu = 0;
+//                     break;
                 
-                case 0:
-                    (*ini)->bal = -1;
-                    *cresceu = 1;
-                    break;
-                case +1:
-                    (*ini)->bal = 0;
-                    *cresceu = 0;
-                    break;
-                }
-            }
-        }
-    }
+//                 case 0:
+//                     (*ini)->bal = -1;
+//                     *cresceu = 1;
+//                     break;
+//                 case +1:
+//                     (*ini)->bal = 0;
+//                     *cresceu = 0;
+//                     break;
+//                 }
+//             }
+//         }
+//     }
 
-    if(auxCadastra(&(*ini)->dir, s, cresceu)){
-        if (*cresceu) {
-            switch ((*ini)->bal) {
-            case -1:
-                (*ini)->bal = 0;
-                *cresceu = 0;
-                break;
-            case 0:
-                (*ini)->bal = +1;
-                *cresceu = 1;
-                break;
-            case +1:
-                if ((*ini)->dir->bal == 1) {
-                    RR(ini);
-                } else {
-                    RL(ini);
-                }
-                *cresceu = 0;
-                break;
-            }
-        }
-        return 1;
-    } else {
-        return 0;
-    }
-}
+//     if(auxCadastra(&(*ini)->dir, s, cresceu)){
+//         if (*cresceu) {
+//             switch ((*ini)->bal) {
+//             case -1:
+//                 (*ini)->bal = 0;
+//                 *cresceu = 0;
+//                 break;
+//             case 0:
+//                 (*ini)->bal = +1;
+//                 *cresceu = 1;
+//                 break;
+//             case +1:
+//                 if ((*ini)->dir->bal == 1) {
+//                     RR(ini);
+//                 } else {
+//                     RL(ini);
+//                 }
+//                 *cresceu = 0;
+//                 break;
+//             }
+//         }
+//         return 1;
+//     } else {
+//         return 0;
+//     }
+// }
 
-int cadastrarMusica(musica_no *ini, musica *s){
+void cadastrarMusica(musica_no *ini, musica *s){
     // int cresceu;
     // return auxCadastra(ini, s, &cresceu);
 
-    if (s->id < ini->num)
+    if (s->id < ini->musica->id)
     {
         if (ini->esq != NULL)
         {
@@ -241,18 +240,20 @@ int cadastrarMusica(musica_no *ini, musica *s){
         } else {
             ini->esq = new musica_no;
             ini->esq->musica = s;
-            ini->esq->num = s->id;
+            ini->esq->musica->id = s->id;
             ini->esq->esq = NULL;
             ini->esq->dir = NULL;
         }
         
-    } else if (s->id > ini->num)
+    } else if (s->id > ini->musica->id)
     {
-        if (ini->dir != NULL)
+        if (ini->dir != NULL) {
+            cadastrarMusica(ini->dir, s);
+        } else
         {
             ini->dir = new musica_no;
             ini->dir->musica = s;
-            ini->dir->num = s->id;
+            ini->dir->musica->id = s->id;
             ini->dir->esq = NULL;
             ini->dir->dir = NULL;
         }
@@ -441,158 +442,136 @@ void imprimirUmaPlaylist(char* nome, lplaylists_no* ini){
 int main(){
     srand(time(NULL));
     int opcao = -1;
-    Musica m;
-    m.id = 1;
-    cin >> m.titulo;
-    cin >> m.artista;
-    cin >> m.album;
-    cin >> m.duracao;
-
-    Musica b;
-    b.id = 5;
-    cin >> b.titulo;
-    cin >> b.artista;
-    cin >> b.album;
-    cin >> b.duracao;
-    musica_no* listaDeMusicas = criaArvore(&m, NULL, criaArvore(&b, NULL, NULL));
-    // lplaylists_no* listaDePlaylists = criaListaEncadeada();
-
-    Musica c;
-    c.id = 6;
-    cin >> c.titulo;
-    cin >> c.artista;
-    cin >> c.album;
-    cin >> c.duracao;
-
-    cadastrarMusica(listaDeMusicas, &c);
+    musica_no* listaDeMusicas = NULL;
+    int counter = 0;
     imprimirListaDeMusicas(listaDeMusicas);
 
-    // do
-    // {
-    //     printMenu();
-    //     cin >> opcao;
-    //     switch (opcao)
-    //     {
-    //     case 1:{
-    //         Musica *p = (Musica*) malloc(sizeof(Musica));
+    do
+    {
+        printMenu();
+        cin >> opcao;
+        switch (opcao)
+        {
+        case 1:{
+            counter++;
+            Musica* p = (Musica*) malloc(sizeof(Musica));
     
-    //         printf("ID da musica: ");
-    //         cin >> p->id;
-    //         if (cin.fail())
-    //         {
-    //             cout << "digite um número inteiro!" << endl;
-    //             cin.clear();
-    //             cin.ignore();
-    //             break;
-    //         } 
+            p->id = counter;
+            if (cin.fail())
+            {
+                cout << "digite um número inteiro!" << endl;
+                cin.clear();
+                cin.ignore();
+                break;
+            } 
                        
-    //         printf("Titulo da musica: ");
-    //         cin >> p->titulo;
-    //         printf("Artista da musica: ");
-    //         cin >> p->artista;
-    //         printf("Album da musica: ");
-    //         cin >> p->album;
+            printf("Titulo da musica: ");
+            cin >> p->titulo;
+            printf("Artista da musica: ");
+            cin >> p->artista;
+            printf("Album da musica: ");
+            cin >> p->album;
 
-    //         printf("Duracao da musica: ");
-    //         cin >> p->duracao;
-    //         if (cin.fail())
-    //         {
-    //             cout << "digite um número inteiro!" << endl;
-    //             cin.clear();
-    //             cin.ignore();
-    //             break;
-    //         }
+            printf("Duracao da musica: ");
+            cin >> p->duracao;
+            if (cin.fail())
+            {
+                cout << "digite um número inteiro!" << endl;
+                cin.clear();
+                cin.ignore();
+                break;
+            }
             
-    //         if (listaDeMusicas == NULL)
-    //         {
-    //             listaDeMusicas = criaArvore(p, NULL, NULL);
-    //         } else cadastrarMusica(&listaDeMusicas, p);
+            if (counter == 1)
+            {
+                listaDeMusicas = criaArvore(p, NULL, NULL);
+            } else {cadastrarMusica(listaDeMusicas, p);}
             
-    //         break;
-    //     }
+            break;
+        }
             
-    //     case 2:
-    //         imprimirListaDeMusicas(listaDeMusicas);
-    //         break;
-    //     case 3: {
+        case 2:
+            imprimirListaDeMusicas(listaDeMusicas);
+            break;
+        // case 3: {
 
-    //         int qtddMusicasP, i, idPlaylist, check = 0;
-    //         char nomePlaylist[MAX_CHAR];
-    //         cout << "Quantas musicas deseja inserir? ";
-    //         cin >> qtddMusicasP;
-    //         if (cin.fail())
-    //         {
-    //             cout << "digite um número inteiro!" << endl;
-    //             cin.clear();
-    //             cin.ignore();
-    //             break;
-    //         }
-    //         cout << "Digite os IDs das musicas que deseja inserir: ";
-    //         int novaPlaylist[qtddMusicasP];
-    //         for (i = 0; i < qtddMusicasP; i++)
-    //         {
-    //             cin >> novaPlaylist[i];
-    //             if (cin.fail())
-    //             {
-    //                 cout << "digite um número inteiro!" << endl;
-    //                 cin.clear();
-    //                 cin.ignore();
-    //                 check = 1;
-    //                 break;
-    //             }
-    //         }
-    //         if (check == 1)
-    //         {
-    //             break;
-    //         }
+        //     int qtddMusicasP, i, idPlaylist, check = 0;
+        //     char nomePlaylist[MAX_CHAR];
+        //     cout << "Quantas musicas deseja inserir? ";
+        //     cin >> qtddMusicasP;
+        //     if (cin.fail())
+        //     {
+        //         cout << "digite um número inteiro!" << endl;
+        //         cin.clear();
+        //         cin.ignore();
+        //         break;
+        //     }
+        //     cout << "Digite os IDs das musicas que deseja inserir: ";
+        //     int novaPlaylist[qtddMusicasP];
+        //     for (i = 0; i < qtddMusicasP; i++)
+        //     {
+        //         cin >> novaPlaylist[i];
+        //         if (cin.fail())
+        //         {
+        //             cout << "digite um número inteiro!" << endl;
+        //             cin.clear();
+        //             cin.ignore();
+        //             check = 1;
+        //             break;
+        //         }
+        //     }
+        //     if (check == 1)
+        //     {
+        //         break;
+        //     }
             
-    //         cout << "Insira o nome da playlist: ";
-    //         cin >> nomePlaylist;
-    //         cout << "Insira o ID da playlist: ";
-    //         cin >> idPlaylist;
-    //         if (cin.fail())
-    //         {
-    //             cout << "digite um número inteiro!" << endl;
-    //             cin.clear();
-    //             cin.ignore();
-    //             break;
-    //         }
+        //     cout << "Insira o nome da playlist: ";
+        //     cin >> nomePlaylist;
+        //     cout << "Insira o ID da playlist: ";
+        //     cin >> idPlaylist;
+        //     if (cin.fail())
+        //     {
+        //         cout << "digite um número inteiro!" << endl;
+        //         cin.clear();
+        //         cin.ignore();
+        //         break;
+        //     }
                         
-    //         inserirPlaylist(listaDePlaylists, criaPlaylist(qtddMusicasP, novaPlaylist, listaDeMusicas), idPlaylist, nomePlaylist);
-    //         break;
+        //     inserirPlaylist(listaDePlaylists, criaPlaylist(qtddMusicasP, novaPlaylist, listaDeMusicas), idPlaylist, nomePlaylist);
+        //     break;
 
-    //     }
-    //     case 4:
-    //         cout << "Nomes das playlists: " << endl;
-    //         imprimirPlaylists(listaDePlaylists);
-    //         break;
-    //     case 5: {
-    //         char nomeShuffle[MAX_CHAR] = "";
-    //         cout << "Insira o nome da playlist desejada: ";
-    //         cin >> nomeShuffle;
-    //         shuffle(nomeShuffle, listaDePlaylists);
-    //         break;
-    //     }
-    //     case 6: {
-    //         char nomeSearch[MAX_CHAR] = "";
-    //         cout << "Insira o nome da playlist que deseja ver: ";
-    //         cin >> nomeSearch;
-    //         imprimirUmaPlaylist(nomeSearch, listaDePlaylists);
-    //         break;
-    //     }
-    //     case 7: {
-    //         char nomeExcluir[MAX_CHAR] = "";
-    //         cout << "insira o nome da musica desejada: ";
-    //         cin >> nomeExcluir;
-    //         excluirMusica(nomeExcluir, listaDePlaylists, listaDeMusicas);
-    //         break;
-    //     }
-    //     default:
-    //         break;
-    //     }
+        // }
+        // case 4:
+        //     cout << "Nomes das playlists: " << endl;
+        //     imprimirPlaylists(listaDePlaylists);
+        //     break;
+        // case 5: {
+        //     char nomeShuffle[MAX_CHAR] = "";
+        //     cout << "Insira o nome da playlist desejada: ";
+        //     cin >> nomeShuffle;
+        //     shuffle(nomeShuffle, listaDePlaylists);
+        //     break;
+        // }
+        // case 6: {
+        //     char nomeSearch[MAX_CHAR] = "";
+        //     cout << "Insira o nome da playlist que deseja ver: ";
+        //     cin >> nomeSearch;
+        //     imprimirUmaPlaylist(nomeSearch, listaDePlaylists);
+        //     break;
+        // }
+        // case 7: {
+        //     char nomeExcluir[MAX_CHAR] = "";
+        //     cout << "insira o nome da musica desejada: ";
+        //     cin >> nomeExcluir;
+        //     excluirMusica(nomeExcluir, listaDePlaylists, listaDeMusicas);
+        //     break;
+        // }
+        default:
+            break;
+        }
             
         
-    // } while (opcao != 0);
+    } while (opcao != 0);
 
 
     return 0;
