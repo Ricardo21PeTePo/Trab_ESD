@@ -259,8 +259,6 @@ void cadastrarMusica(musica_no *ini, musica *s){
         }
         
     }
-    
-    
 }
 
 void imprimirListaDeMusicas(musica_no* ini){
@@ -455,8 +453,8 @@ int main(){
         case 1:{
             counter++;
             Musica* p = (Musica*) malloc(sizeof(Musica));
-    
-            p->id = counter;
+            printf("ID da musica: ");
+            cin >> p->id;
             if (cin.fail())
             {
                 cout << "digite um número inteiro!" << endl;
