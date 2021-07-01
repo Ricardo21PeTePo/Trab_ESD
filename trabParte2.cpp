@@ -77,13 +77,15 @@ playlist_no* criaListaCircular(){
 }
 
 int qtddMusicasCadastradas(musica_no* ini){
-    musica_no* p = ini;
-    if (p == NULL)
+    int counter = 0;
+    if (ini != NULL)
     {
-        return 0;
-    } else {
-        return qtddMusicasCadastradas(p->esq) + qtddMusicasCadastradas(p->dir) + 1;
+        counter++;
+        counter += qtddMusicasCadastradas(ini->dir);
+        counter += qtddMusicasCadastradas(ini->esq);
     }
+    return counter;
+    
 }
 
 // void LL(musica_no** r) {
@@ -277,33 +279,45 @@ void imprimirListaDeMusicas(musica_no* ini){
     }
 }
 
-// playlist_no* criaPlaylist(int qtddM, int musicas[], musica_no* listaDeMusicas){
-//     int i;
-//     musica_no* ini = listaDeMusicas->prox;
-//     playlist_no* novaPlaylist = criaListaCircular();
-//     for (i = qtddM-1; i >= 0; i--)
-//     {
-//         while (ini)
-//         {
-//             if(ini->musica->id == musicas[i]){
-//                 playlist_no* p = (playlist_no*) malloc(sizeof(playlist_no));
-//                 p->musica = ini->musica;
-//                 if (novaPlaylist->prox == novaPlaylist)
-//                 {
-//                     novaPlaylist->prox = p;
-//                     p->prox = novaPlaylist;
-//                 } else {
-//                     p->prox = novaPlaylist->prox;
-//                     novaPlaylist->prox = p;
-//                 }
+playlist_no* criaPlaylist(int qtddM, int musicas[], musica_no* ini){   
+    int i;
+    playlist_no* novaPlaylist = criaListaCircular();
+    if(ini != NULL){
+        for (i = qtddM-1; i >= 0; i--) {
+            if (ini->musica->id == musicas[i]) {
+                playlist_no* p = (playlist_no*) malloc(sizeof(playlist_no));
+                p->musica = ini->musica;
+                if (novaPlaylist->prox == novaPlaylist)
+                {
+                    novaPlaylist->prox = p;
+                    p->prox = novaPlaylist;
+                } else {
+                    p->prox = novaPlaylist->prox;
+                    novaPlaylist->prox = p;
+                }
+            } else if (ini->musica->id > musicas[i])
+            {
+                novaPlaylist->prox = criaPlaylist(qtddM, musicas, ini->esq);
+            } else if (ini->musica->id < musicas[i])
+            {
+                novaPlaylist->prox = criaPlaylist(qtddM, musicas, ini->dir);
+            }
+            
+        }
+    }
+    //     while (ini)
+    //     {
+    //         if(ini->musica->id == musicas[i]){
+    //             
+    //             
                 
-//             }
-//             ini = ini->prox;
-//         }
-//         ini = listaDeMusicas->prox;
-//     }
-//     return novaPlaylist;
-// }
+    //         }
+    //         ini = ini->prox;
+    //     }
+    //     ini = listaDeMusicas->prox;
+    // }
+    return novaPlaylist;
+}
 
 
 void inserirPlaylist(lplaylists_no* ini, playlist_no* p, int id, char* nome){
@@ -441,8 +455,8 @@ int main(){
     srand(time(NULL));
     int opcao = -1;
     musica_no* listaDeMusicas = NULL;
+    lplaylists_no* listaDePlaylists = criaListaEncadeada(); 
     int counter = 0;
-    imprimirListaDeMusicas(listaDeMusicas);
 
     do
     {
@@ -491,72 +505,72 @@ int main(){
         case 2:
             imprimirListaDeMusicas(listaDeMusicas);
             break;
-        // case 3: {
+        case 3: {
 
-        //     int qtddMusicasP, i, idPlaylist, check = 0;
-        //     char nomePlaylist[MAX_CHAR];
-        //     cout << "Quantas musicas deseja inserir? ";
-        //     cin >> qtddMusicasP;
-        //     if (cin.fail())
-        //     {
-        //         cout << "digite um número inteiro!" << endl;
-        //         cin.clear();
-        //         cin.ignore();
-        //         break;
-        //     }
-        //     cout << "Digite os IDs das musicas que deseja inserir: ";
-        //     int novaPlaylist[qtddMusicasP];
-        //     for (i = 0; i < qtddMusicasP; i++)
-        //     {
-        //         cin >> novaPlaylist[i];
-        //         if (cin.fail())
-        //         {
-        //             cout << "digite um número inteiro!" << endl;
-        //             cin.clear();
-        //             cin.ignore();
-        //             check = 1;
-        //             break;
-        //         }
-        //     }
-        //     if (check == 1)
-        //     {
-        //         break;
-        //     }
+            int qtddMusicasP, i, idPlaylist, check = 0;
+            char nomePlaylist[MAX_CHAR];
+            cout << "Quantas musicas deseja inserir? ";
+            cin >> qtddMusicasP;
+            if (cin.fail())
+            {
+                cout << "digite um número inteiro!" << endl;
+                cin.clear();
+                cin.ignore();
+                break;
+            }
+            cout << "Digite os IDs das musicas que deseja inserir: ";
+            int novaPlaylist[qtddMusicasP];
+            for (i = 0; i < qtddMusicasP; i++)
+            {
+                cin >> novaPlaylist[i];
+                if (cin.fail())
+                {
+                    cout << "digite um número inteiro!" << endl;
+                    cin.clear();
+                    cin.ignore();
+                    check = 1;
+                    break;
+                }
+            }
+            if (check == 1)
+            {
+                break;
+            }
             
-        //     cout << "Insira o nome da playlist: ";
-        //     cin >> nomePlaylist;
-        //     cout << "Insira o ID da playlist: ";
-        //     cin >> idPlaylist;
-        //     if (cin.fail())
-        //     {
-        //         cout << "digite um número inteiro!" << endl;
-        //         cin.clear();
-        //         cin.ignore();
-        //         break;
-        //     }
+            cout << "Insira o nome da playlist: ";
+            cin >> nomePlaylist;
+            cout << "Insira o ID da playlist: ";
+            cin >> idPlaylist;
+            if (cin.fail())
+            {
+                cout << "digite um número inteiro!" << endl;
+                cin.clear();
+                cin.ignore();
+                break;
+            }
                         
-        //     inserirPlaylist(listaDePlaylists, criaPlaylist(qtddMusicasP, novaPlaylist, listaDeMusicas), idPlaylist, nomePlaylist);
-        //     break;
-
-        // }
-        // case 4:
-        //     cout << "Nomes das playlists: " << endl;
-        //     imprimirPlaylists(listaDePlaylists);
-        //     break;
-        // case 5: {
-        //     char nomeShuffle[MAX_CHAR] = "";
-        //     cout << "Insira o nome da playlist desejada: ";
-        //     cin >> nomeShuffle;
-        //     shuffle(nomeShuffle, listaDePlaylists);
-        //     break;
-        // }
-        // case 6: {
-        //     char nomeSearch[MAX_CHAR] = "";
-        //     cout << "Insira o nome da playlist que deseja ver: ";
-        //     cin >> nomeSearch;
-        //     imprimirUmaPlaylist(nomeSearch, listaDePlaylists);
-        //     break;
-        // }
+            inserirPlaylist(listaDePlaylists, criaPlaylist(qtddMusicasP, novaPlaylist, listaDeMusicas), idPlaylist, nomePlaylist);
+            break;
+        
+        }
+        case 4:
+            cout << "Nomes das playlists: " << endl;
+            imprimirPlaylists(listaDePlaylists);
+            break;
+        case 5: {
+            char nomeShuffle[MAX_CHAR] = "";
+            cout << "Insira o nome da playlist desejada: ";
+            cin >> nomeShuffle;
+            shuffle(nomeShuffle, listaDePlaylists);
+            break;
+        }
+        case 6: {
+            char nomeSearch[MAX_CHAR] = "";
+            cout << "Insira o nome da playlist que deseja ver: ";
+            cin >> nomeSearch;
+            imprimirUmaPlaylist(nomeSearch, listaDePlaylists);
+            break;
+        }
         // case 7: {
         //     char nomeExcluir[MAX_CHAR] = "";
         //     cout << "insira o nome da musica desejada: ";
