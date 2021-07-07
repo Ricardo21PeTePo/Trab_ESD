@@ -279,30 +279,44 @@ void imprimirListaDeMusicas(musica_no* ini){
     }
 }
 
+musica_no* pesquisa(int id, musica_no* ini) {
+
+    if(ini != NULL) {
+        if (id == ini->musica->id)
+            return ini;
+        if (id < ini->musica->id)
+            return pesquisa(id, ini->esq);
+        else
+            return pesquisa(id, ini->dir);        
+    } else return NULL;
+
+}
+
+musica_no* pesquisaString(char *name, musica_no* ini) {
+    if(ini != NULL) {
+        if (strcmp(name, ini->musica->titulo) == 0)
+            return ini;
+        else
+            return (pesquisaString(name, ini->esq) != NULL ? pesquisaString(name, ini->esq) : pesquisaString(name, ini->dir));
+    } else return NULL;
+
+}
+
 playlist_no* criaPlaylist(int qtddM, int musicas[], musica_no* ini){   
     int i;
     playlist_no* novaPlaylist = criaListaCircular();
     if(ini != NULL){
-        for (i = qtddM-1; i >= 0; i--) {
-            if (ini->musica->id == musicas[i]) {
-                playlist_no* p = (playlist_no*) malloc(sizeof(playlist_no));
-                p->musica = ini->musica;
-                if (novaPlaylist->prox == novaPlaylist)
-                {
-                    novaPlaylist->prox = p;
-                    p->prox = novaPlaylist;
-                } else {
-                    p->prox = novaPlaylist->prox;
-                    novaPlaylist->prox = p;
-                }
-            } else if (ini->musica->id > musicas[i])
+        for (i = 0; i < qtddM; i++) {
+            playlist_no* p = (playlist_no*) malloc(sizeof(playlist_no));
+            p->musica = pesquisa(musicas[i], ini)->musica;
+            if (novaPlaylist->prox == novaPlaylist)
             {
-                novaPlaylist->prox = criaPlaylist(qtddM, musicas, ini->esq);
-            } else if (ini->musica->id < musicas[i])
-            {
-                novaPlaylist->prox = criaPlaylist(qtddM, musicas, ini->dir);
+                novaPlaylist->prox = p;
+                p->prox = novaPlaylist;
+            } else {
+                p->prox = novaPlaylist->prox;
+                novaPlaylist->prox = p;
             }
-            
         }
     }
     //     while (ini)
@@ -420,36 +434,26 @@ void imprimirUmaPlaylist(char* nome, lplaylists_no* ini){
     
 }
 
-// void excluirMusica(char* nome, lplaylists_no* play, musica_no* musi) {
-//     musica_no* lm = musi->prox;
-
-//     while (lm) {
-//         if (strcmp(lm->musica->titulo, nome) == 0)
-//         {
-//             lm->ant->prox = lm->prox;
-//             free(lm);
-//             break;
-//         }
-//         lm = lm->prox;
-//     }
-
-//     lplaylists_no* lp = play->prox;
-//     playlist_no* p = lp->musicas->prox;
+void excluirMusica(char* nome, lplaylists_no* play, musica_no* musi) {
     
-//     while (lp)
-//     {
-//         Musica* m = p->musica;
-//         if (strcmp(m->titulo, nome) == 0){
-//             free(m);
-//             break;
-//         } else {
-//             p = p->prox;
-//         }
-//         lp = lp->prox;
-//     }
+    free(pesquisaString(nome, musi));
     
 
-// }
+    // lplaylists_no* lp = play->prox;
+    // playlist_no* p = lp->musicas->prox;
+    
+    // while (lp)
+    // {
+    //     Musica* m = p->musica;
+    //     if (strcmp(m->titulo, nome) == 0){
+    //         free(m);
+    //         break;
+    //     } else {
+    //         p = p->prox;
+    //     }
+    //     lp = lp->prox;
+    // }
+}
 
 int main(){
     srand(time(NULL));
@@ -571,13 +575,13 @@ int main(){
             imprimirUmaPlaylist(nomeSearch, listaDePlaylists);
             break;
         }
-        // case 7: {
-        //     char nomeExcluir[MAX_CHAR] = "";
-        //     cout << "insira o nome da musica desejada: ";
-        //     cin >> nomeExcluir;
-        //     excluirMusica(nomeExcluir, listaDePlaylists, listaDeMusicas);
-        //     break;
-        // }
+        case 7: {
+            char nomeExcluir[MAX_CHAR] = "";
+            cout << "insira o nome da musica desejada: ";
+            cin >> nomeExcluir;
+            excluirMusica(nomeExcluir, listaDePlaylists, listaDeMusicas);
+            break;
+        }
         default:
             break;
         }
