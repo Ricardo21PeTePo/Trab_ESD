@@ -292,10 +292,10 @@ musica_no* pesquisa(int id, musica_no* ini) {
 
 }
 
-musica_no* pesquisaString(char *name, musica_no* ini) {
+musica_no** pesquisaString(char *name, musica_no* ini) {
     if(ini != NULL) {
         if (strcmp(name, ini->musica->titulo) == 0)
-            return ini;
+            return &ini;
         else
             return (pesquisaString(name, ini->esq) != NULL ? pesquisaString(name, ini->esq) : pesquisaString(name, ini->dir));
     } else return NULL;
@@ -434,25 +434,68 @@ void imprimirUmaPlaylist(char* nome, lplaylists_no* ini){
     
 }
 
-void excluirMusica(char* nome, lplaylists_no* play, musica_no* musi) {
-    
-    free(pesquisaString(nome, musi));
-    
+musica_no* menorValorADireita(musica_no* no)
+{
+    musica_no* atual = no;
 
-    // lplaylists_no* lp = play->prox;
-    // playlist_no* p = lp->musicas->prox;
+    while (atual && atual->esq != NULL)
+        atual = atual->esq;
+ 
+    return atual;
+}
+
+musica_no* excluirMusica(int id, musica_no* root) {
+    if (root == NULL)
+    {
+        return root;
+    }
+
+    if (id < root->musica->id)
+        root->esq = excluirMusica(id, root->esq);
+ 
+    else if (id > root->musica->id)
+        root->dir = excluirMusica(id, root->dir);
+    else {
+        if (root->esq==NULL and root->dir==NULL)
+        {
+            return NULL;
+        } else if (root->esq == NULL)
+        {
+            musica_no* temp = root->dir;
+            free(root);
+            return temp;
+        } else if (root->dir == NULL) {
+            musica_no* temp = root->esq;
+            free(root);
+            return temp;
+        }
+        
+        musica_no* temp = menorValorADireita(root->dir);
+
+        root->musica = temp->musica;
+        root->dir = excluirMusica(id, root->dir);
+    }
+    return root;
+}
+
+void excluirMusicaDePlaylist(int id, lplaylists_no* play) {
+    lplaylists_no* lp = play->prox;
+    playlist_no* p = lp->musicas->prox;
     
-    // while (lp)
-    // {
-    //     Musica* m = p->musica;
-    //     if (strcmp(m->titulo, nome) == 0){
-    //         free(m);
-    //         break;
-    //     } else {
-    //         p = p->prox;
-    //     }
-    //     lp = lp->prox;
-    // }
+    while (lp)
+    {
+        while (p)
+        {
+            Musica* m = p->musica;
+            if (m->id == id){
+                free(m);
+                break;
+            } else {
+                p = p->prox;
+            }
+        }
+        lp = lp->prox;
+    }
 }
 
 int main(){
@@ -576,10 +619,11 @@ int main(){
             break;
         }
         case 7: {
-            char nomeExcluir[MAX_CHAR] = "";
-            cout << "insira o nome da musica desejada: ";
-            cin >> nomeExcluir;
-            excluirMusica(nomeExcluir, listaDePlaylists, listaDeMusicas);
+            int id;
+            cout << "insira o id da musica a excluir: ";
+            cin >> id;
+            listaDeMusicas = excluirMusica(id, listaDeMusicas);
+            excluirMusicaDePlaylist(id, listaDePlaylists);
             break;
         }
         default:
